@@ -15,9 +15,9 @@
     "explorer.compactFolders": false,
   
     // workbench
-    "workbench.editor.enablePreview": false,
-    "workbench.iconTheme": "material-icon-theme",
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.editor.enablePreview": true,
+    "workbench.iconTheme": "vs-seti",
+    "workbench.colorTheme": "Deep Blue",
   
     // prettier
     "editor.defaultFormatter": "esbenp.prettier-vscode",

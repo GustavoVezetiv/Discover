@@ -2,7 +2,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  
 }
 
 body {
@@ -17,23 +16,40 @@ body * {
 #container {
   width: 360px;
   margin: 56px auto 0px;
-
-  
 }
 
-#profile{
+#profile {
   text-align: center;
   padding: 24px;
-
 }
 
-#profile img{
+#profile img {
   width: 112px;
   margin: auto;
-
 }
 
-#profile p{
+#profile p {
   font-weight: 500;
   line-height: 24px;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+ul li a{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+
 }
