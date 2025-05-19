@@ -33,6 +33,7 @@ body * {
   line-height: 24px;
 }
 
+/* links */
 ul {
   list-style: none;
   display: flex;
@@ -53,3 +54,5 @@ ul li a{
   -webkit-backdrop-filter: blur(4px);
 
 }
+
+
