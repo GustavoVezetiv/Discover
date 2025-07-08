@@ -20,6 +20,8 @@ export default function Index() {
   const [selectedLink, setSelectedLink] = useState<LinkStorage | null>(null);
   const [qrCodeData, setQrCodeData] = useState<string | null>(null);
 
+  const [responseApiQRCode, setResponseApiQRCode ] = useState({});
+
   // REMOVEMOS os estados antigos 'showModal' e 'link' para evitar conflitos.
 
   // --- FUNÇÕES ATUALIZADAS PARA USAR O NOVO ESTADO ---
@@ -36,15 +38,54 @@ export default function Index() {
     setQrCodeData(null); // Fecha o modal de QR Code
   }
 
-  async function handleGenerateQrCode() {
-    if (!selectedLink) return; // Usa o 'selectedLink'
+
+
+/* async function handleGenerateQrCode() {
+     if (!selectedLink) return; // Usa o 'selectedLink'
     try {
-      const response = await api.post('/generate-qr', { url: selectedLink.url });
-      setQrCodeData(response.data.qrCode);
-      handleCloseDetailsModal(); // Fecha um modal para abrir o outro
+      console.log(selectedLink);
+      const response = await api.post('', { url: selectedLink.url });
+      console.log("entrou");
+      console.log(response);
+      setResponseApiQRCode(response) 
+      GenerateQrCode();
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível gerar o QR Code.");
+      Alert.alert("Erro", "Não foi possível conectar a Api do QR Code.");
       console.log(error);
+
+    } 
+  }  */
+
+    async function handleGenerateQrCode() {
+  if (!selectedLink) return;
+
+  try {
+    const response = await api.post('', { url: selectedLink.url });
+
+    console.log("entrou");
+    console.log(response);
+
+    const qrCode = response.data?.qrCode;
+
+    if (!qrCode) {
+      throw new Error("QR Code não encontrado na resposta da API");
+    }
+
+    setQrCodeData(qrCode); // Define diretamente o qrCode
+    handleCloseDetailsModal(); // Fecha o modal de detalhes
+  } catch (error) {
+    Alert.alert("Erro", "Não foi possível gerar o QR Code.");
+    console.log(error);
+  }
+}
+
+  async function GenerateQrCode() {
+      try {
+        setQrCodeData(responseApiQRCode.data.qrCode);
+        handleCloseDetailsModal(); // Fecha um modal para abrir o outro
+      } catch (error) {
+        Alert.alert("Erro", "Não foi possível gerar o QR Code.");
+        console.log(error);
     }
   }
 
@@ -135,7 +176,7 @@ export default function Index() {
 
             <View style={styles.modalFooter}>
               <Option name="Excluir" icon="delete" variant="secondary" onPress={handleRemove} />
-              <Option name="QR Code" icon="qr-code" onPress={handleGenerateQrCode} />
+              <Option name="QR Code" icon="qr-code" onPress={ handleGenerateQrCode} />
               <Option name="Abrir" icon="language" onPress={handleOpenLink} />
             </View>
           </View>

@@ -33,3 +33,31 @@
                 setErrorPassword(true)
             })
 } */
+
+            /* fetch(`http://192.168.0.107:3333/generate-qr`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ url: selectedLink!.url }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    console.log(response)
+                    return response.json().then(err => { // Tenta ler o corpo JSON de erro
+                        err.status = response.status
+                        throw err; // Retorna o erro com o corpo JSON
+                    });
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(Object.entries(data));
+                setResponseApiQRCode(data)
+            })
+            .catch((error) => {
+                console.error(error)
+                
+                  Alert.alert("Erro", "Não foi possível conectar a Api do QR Code.");
+            })
+ */
