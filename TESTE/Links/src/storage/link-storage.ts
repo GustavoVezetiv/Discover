@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addArchivedLink } from "@/storage/archive-storage";
 
 // Mudei o nome da constante para ser mais claro e evitar conflitos.
 const LINK_COLLECTION = "@links-app:links";
@@ -51,6 +52,6 @@ async function remove(id: string) {
     throw error;
   }
 }
-
+    
 // ---- EXPORT ATUALIZADO, INCLUINDO A NOVA FUNÇÃO ----
 export const linkStorage = { get, save, remove, getByCategory };

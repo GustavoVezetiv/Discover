@@ -10,8 +10,35 @@ import { useCallback, useState } from 'react'
 import { categories } from '@/utils/categories'
 import { LinkStorage, linkStorage } from '@/storage/link-storage'
 import { api } from "@/services/api";
+import { addArchivedLink } from '@/storage/archive-storage'; // certifique-se de ter esse arquivo
+
+
 
 export default function Index() {
+
+
+async function handleArchive() {
+  if (!selectedLink) return;
+
+  Alert.alert("Arquivar", `Deseja realmente arquivar o link ${selectedLink.name}?`, [
+    { style: "cancel", text: "Não" },
+    { text: "Sim", onPress: async () => {
+        try {
+          await addArchivedLink(selectedLink); // salva em novo storage
+          await linkStorage.remove(selectedLink.id); // remove da lista ativa
+          handleCloseDetailsModal(); // fecha modal
+          getLinks(); // atualiza lista visível
+        } catch (error) {
+          Alert.alert("Erro", "Não foi possível arquivar o link.");
+          console.error(error);
+        }
+      } 
+    },
+  ]);
+}
+
+
+
   // --- ESTADO UNIFICADO E LIMPO ---
   const [links, setLinks] = useState<LinkStorage[]>([])
   const [category, setCategory] = useState(categories[0].name)
@@ -131,12 +158,31 @@ export default function Index() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Image source={require("@/assets/logo.png")} style={styles.logo} />
+        
+        {/* botao para as outras telas */}
+        <TouchableOpacity onPress={() => router.navigate("/withme")}>
+          <MaterialIcons name='person' size={32} color={colors.green[300]}/>
+        </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.navigate("/wproj")}>
+          <MaterialIcons name='hardware' size={32} color={colors.green[300]}/>
+        </TouchableOpacity>
+
+        <TouchableOpacity onPress={() => router.navigate("/archived/archived")}>
+          <MaterialIcons name='close' size={32} color={colors.green[300]}/>
+        </TouchableOpacity>
+        
         <TouchableOpacity onPress={() => router.navigate("/add")}>
           <MaterialIcons name='add' size={32} color={colors.green[300]}/>
         </TouchableOpacity>
+
+
+
+
+
       </View>
 
-      {/* CORREÇÃO: Usando 'onPress' e passando a lista de categorias */}
+ 
  <Categories onChange={setCategory} selected={category}/>
 
 
@@ -173,7 +219,7 @@ export default function Index() {
             <Text style={styles.modalUrl}>{selectedLink?.url}</Text>
 
             <View style={styles.modalFooter}>
-              <Option name="Excluir" icon="delete" variant="secondary" onPress={handleRemove} />
+              <Option name="Excluir" icon="delete" variant="secondary" onPress={handleArchive} />
               <Option name="QR Code" icon="qr-code" onPress={ handleGenerateQrCode} />
               <Option name="Abrir" icon="language" onPress={handleOpenLink} />
             </View>
