@@ -36,6 +36,6 @@ app.post('/generate-qr', async (request, reply) => {
 
 
 // --- INICIANDO O SERVIDOR ---
-app.listen({ port: 3333 }).then(() => {
-  console.log('🚀 Servidor Gerador de QR Code rodando em http://localhost:3333');
+app.listen({ port: 3333, host: '0.0.0.0' }).then(() => {
+  console.log('🚀 Servidor Gerador de QR Code rodando em http://0.0.0.0:3333');
 });
