@@ -60,7 +60,8 @@ export default function Index() {
   if (!selectedLink) return;
 
   try {
-    const response = await api.post('', { url: selectedLink.url });
+    const response = await api.post('/generate-qr', { url: selectedLink.url });
+
 
     console.log("entrou");
     console.log(response);
