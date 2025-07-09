@@ -1,7 +1,8 @@
 // ARQUIVO COMPLETO E MAIS SEGURO: src/app/_layout.tsx
 
-import { Slot, SplashScreen } from "expo-router";
+import { Slot, SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+import { colors } from "@/styles/colors";
 
 import {
   useFonts,
@@ -17,6 +18,7 @@ import {
 SplashScreen.preventAutoHideAsync();
 
 export default function Layout() {
+  
   // Vamos carregar APENAS as fontes Roboto aqui.
   const [fontsLoaded, fontError] = useFonts({
     Roboto_400Regular,
@@ -40,7 +42,11 @@ export default function Layout() {
   if (!fontsLoaded && !fontError) {
     return null;
   }
-
+const backgroundColor = colors.gray[950]
   // Se tudo deu certo, renderizamos o aplicativo.
-  return <Slot />;
+  return <Stack screenOptions={{
+            headerShown: false,
+            contentStyle: { backgroundColor },
+        }}
+    />
 }

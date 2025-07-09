@@ -21,7 +21,7 @@ export function Option({ name, icon, variant = "primary", ...rest }: Props) {
       <MaterialIcons
         name={icon}
         size={24}
-        color={variant === "primary" ? colors.white[100] : colors.red[300]}
+        color={variant === "primary" ? colors.green[300] : colors.red[300]}
       />
       <Text style={styles.name}>{name}</Text>
     </TouchableOpacity>

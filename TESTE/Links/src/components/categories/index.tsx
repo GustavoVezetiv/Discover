@@ -1,26 +1,26 @@
+import { categories } from "@/utils/categories";
 import { FlatList } from "react-native";
 import { Category } from "@/components/category";
 import { styles } from "./styles";
 
-type Props = {
-  categories: string[];
-  selected: string;
-  onPress: (category: string) => void;
-};
 
-export function Categories({ categories, selected, onPress }: Props) {
+//verificar porque não esta marcando como selecionado o tipo do arquivo/pagina
+type Props = {
+  selected: string
+  onChange: (category: string) => void
+}
+
+export function Categories({ selected, onChange }: Props) {
   return (
-    <FlatList
+    <FlatList 
       data={categories}
-      keyExtractor={(item) => item}
+      keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <Category
-          name={item}
-          icon="tag"
-          // CORREÇÃO 1: 'item' já é a string, não precisa de .name
-          isSelected={item === selected}
-          // CORREÇÃO 2: Passamos apenas 'item' para a função onPress
-          onPress={() => onPress(item)}
+        <Category 
+          name={item.name}
+          icon={item.icon}
+          isSelected={item.name === selected}
+          onPress={() => onChange(item.name)}
         />
       )}
       horizontal
@@ -28,5 +28,5 @@ export function Categories({ categories, selected, onPress }: Props) {
       contentContainerStyle={styles.content}
       showsHorizontalScrollIndicator={false}
     />
-  );
+  )
 }

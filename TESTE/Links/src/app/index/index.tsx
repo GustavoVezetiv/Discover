@@ -137,11 +137,8 @@ export default function Index() {
       </View>
 
       {/* CORREÇÃO: Usando 'onPress' e passando a lista de categorias */}
-      <Categories 
-        categories={categories.map(c => c.name)} 
-        onPress={setCategory} 
-        selected={category}
-      />
+ <Categories onChange={setCategory} selected={category}/>
+
 
       <FlatList 
         data={links}

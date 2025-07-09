@@ -1,5 +1,3 @@
-// ARQUIVO COMPLETO E CORRIGIDO: src/app/add/index.tsx
-
 import { Alert, Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./styles";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -9,15 +7,15 @@ import { Categories } from "@/components/categories";
 import { Input } from "@/components/input";
 import { Button } from "@/components/button";
 import { useState } from "react";
-import { categories } from "@/utils/categories";
 import { linkStorage } from "@/storage/link-storage";
 
 export default function Add() {
-  const [category, setCategory] = useState("Site")
+  const [category, setCategory] = useState("")
   const [name, setName] = useState("")
   const [url, setUrl] = useState("")
 
   async function handleAdd() {
+    //verifica se os campos estão vazios - trim remove os espaços em branco
     try {
       if (!category.trim()) {
         return Alert.alert("Categoria", "Selecione a categoria")
@@ -29,30 +27,25 @@ export default function Add() {
         return Alert.alert("URL", "Informe a URL")
       }
 
-      // --- LÓGICA RESTAURADA E SIMPLIFICADA ---
-      // 1. Cria o objeto do novo link
-      const newLink = {
-        // Gera um ID único baseado no tempo atual em milissegundos. Simples e sem bibliotecas.
-        id: String(new Date().getTime()),
-        name,
-        url,
+      await linkStorage.save({
+        id: new Date().getTime().toString(),
         category,
-      }
+        name,
+        url
+      })
 
-      // 2. Salva o novo link no AsyncStorage
-      await linkStorage.save(newLink);
-
-      // 3. Mostra a mensagem de sucesso
-      Alert.alert("Sucesso", "Link adicionado!");
-      
-      // 4. Volta para a tela anterior
-      router.back();
-
+      Alert.alert("Sucesso", "Link salvo com sucesso", [
+        { 
+          text: "Ok",
+          onPress: () => router.back()
+        },
+      ])
     } catch (error) {
       Alert.alert("Erro", "Não foi possível salvar o link")
-      console.log(error)
+      console.log(error)     
     }
   }
+
 
   return (
     <View style={styles.container}>
@@ -65,19 +58,14 @@ export default function Add() {
       </View>
 
       <Text style={styles.label}>Selecione uma categoria</Text>
-
-      <Categories
-        categories={categories.map((item) => item.name)}
-        onPress={setCategory}
-        selected={category}
-      />
+      <Categories onChange={setCategory} selected={category} />
 
       <View style={styles.form}>
         <Input placeholder="Nome" onChangeText={setName} autoCorrect={false} />
-        <Input
-          placeholder="URL"
-          onChangeText={setUrl}
-          autoCorrect={false}
+        <Input 
+          placeholder="URL" 
+          onChangeText={setUrl} 
+          autoCorrect={false} 
           autoCapitalize="none"
         />
         <Button title="Adicionar" onPress={handleAdd}/>
